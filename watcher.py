@@ -11,10 +11,6 @@ def to_date(date_string):
     return datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%SZ")
 
 
-def pluck(key, things):
-    return [_[key] for _ in things]
-
-
 def info_for(username):
     """Get one page of data (up to 30 actions)"""
     info = requests.get(url.format(username)).json()
@@ -24,7 +20,7 @@ def info_for(username):
 def velocity_of(username):
     """Crude metric for GitHub activity"""
     info = info_for(username)
-    date_strings = pluck('created_at', info)
+    date_strings = [_['created_at'] for _ in info]
     dates = [to_date(date_string) for date_string in date_strings]
     earliest = min(dates)
     now = datetime.now()
