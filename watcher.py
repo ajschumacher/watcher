@@ -26,7 +26,9 @@ def velocity_of(username):
     info = info_for(username)
     date_strings = pluck('created_at', info)
     dates = [to_date(date_string) for date_string in date_strings]
-    seconds = (dates[0] - dates[-1]).total_seconds()
+    earliest = min(dates)
+    now = datetime.now()
+    seconds = (now - earliest).total_seconds()
     float_days = seconds / float(24 * 60 * 60)
     return len(dates) / float_days
 
@@ -35,7 +37,8 @@ def main():
     print("GITHUB VELOCITY (ACTIONS/DAY)")
     print("-----------------------------")
     for username in sys.argv[1:]:
-        print("{}: {}".format(username, velocity_of(username)))
+        print("  {:<20}{:>5.1f}".format(username,
+                                        velocity_of(username)))
 
 if __name__ == '__main__':
     main()
