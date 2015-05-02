@@ -29,12 +29,25 @@ def velocity_of(username):
     return len(dates) / float_days
 
 
-def main():
+def header():
     print("GITHUB VELOCITY (ACTIONS/DAY)")
     print("-----------------------------")
+
+def show(user, score):
+    print("  {:<20}{:>5.1f}".format(user, score))
+
+def main():
+    scores = []
+    header()
     for username in sys.argv[1:]:
-        print("  {:<20}{:>5.1f}".format(username,
-                                        velocity_of(username)))
+        score = velocity_of(username)
+        show(username, score)
+        scores.append((username, score))
+    scores.sort(key=lambda x: x[1], reverse=True)
+    print('')
+    header()
+    for username, score in scores:
+        show(username, score)
 
 if __name__ == '__main__':
     main()
